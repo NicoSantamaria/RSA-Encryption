@@ -28,6 +28,23 @@ getUserPublicKey defaultVal = do
     input <- getPrime defaultVal
     return input
 
+-- prompt the user to find prime factors which are coprime to the chosen public key
+getUserFactor :: Integer -> IO Integer
+getUserFactor defaultVal = do
+    input <- getPrime defaultVal
+    return input
+
+getUserPrimeFactors :: Integer -> Integer -> Integer -> IO Numbers
+getUserPrimeFactors firstDefaultPrime secondDefaultPrime e = do
+    p <- getUserFactor firstDefaultPrime
+    q <- getUserFactor secondDefaultPrime
+    if coprime p q e
+        then return (Numbers p q e)
+        else do
+            putStrLn $ "The public key e must be coprime to (p - 1)(q - 1), where p and q are your chosen prime factors. Please choose again."
+            getUserPrimeFactors firstDefaultPrime secondDefaultPrime e
+
+
 -- check for divide by zero errors: cant be congruent to the public key mod?
 getMessage :: Integer -> IO Integer
 getMessage defaultVal = do
@@ -47,8 +64,8 @@ main = do
     putStrLn $ "You have chosen public key " ++ show e ++ "." 
 
     putStrLn $ "To encrypt messages, RSA needs two prime numbers to generate the private key. Which prime numbers would you like?"
-    p <- getPrime 7170669219235139
-    q <- getPrime 3557745895880441
+    numbersIO <- getUserPrimeFactors 7170669219235139 3557745895880441 e
+    let (Numbers p q _) = numbersIO
     putStrLn $ "You have chosen primes " ++ show p ++ " and " ++ show q ++ "."
 
     putStrLn $ "Lastly, choose a private message."
