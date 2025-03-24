@@ -15,14 +15,11 @@ import Primes(isPrime, coprime)
 rsaReceiver :: Numbers -> Keys
 rsaReceiver (Numbers p q e) = Keys (getPublicKey $ Numbers p q e) (getPrivateKey $ Numbers p q e)
 
--- a test test of numbers p q and e
-exampleNumbers :: Numbers
-exampleNumbers = Numbers 7170669219235139 3557745895880441 65537
 
 -- TODO: getPublicKey and getPrime are so similar... surely they can be abstracted
 -- TODO: check that the input is of the form 2k + 1
-getPublicKey :: Integer -> IO Integer
-getPublicKey defaultVal = do
+getUserPublicKey :: Integer -> IO Integer
+getUserPublicKey defaultVal = do
     putStrLn $ "Please choose a public key. Type nothing to use the default value: " ++ show defaultVal
     input <- getLine
     if null input 
@@ -33,7 +30,8 @@ getPublicKey defaultVal = do
                 then return userNum
                 else do
                     putStrLn $ input ++ " is not a prime."
-                    getPublicKey defaulVal
+                    getUserPublicKey defaultVal
+
 
 -- Function to get a prime number from the user with a default value
 getPrime :: Integer -> IO Integer
@@ -50,21 +48,41 @@ getPrime defaultVal = do
                     putStrLn $ input ++ " is not a prime."
                     getPrime defaultVal
 
--- when run, shows that the private message 4727576933 decodes back to 4727576933
+
+getMessage :: Integer -> IO Integer
+getMessage defaultVal = do
+    putStrLn $ "Please choose a message. Type nothing to use the default value: " ++ show defaultVal
+    input <- getLine
+    if null input
+        then return defaultVal
+        else return (read input :: Integer)
+
+
 main :: IO()
 main = do
     putStrLn $ "Welcome to the RSA playground! Here, you can choose numbers..."
+
     putStrLn $ "First, choose a public key. Strong public keys are primes of the form 2k+1. Examples include 3, 5, 17, 257, and 65537."
-    e <- getPublicKey 65537
+    e <- getUserPublicKey 65537
+    putStrLn $ "You have chosen public key " ++ show e ++ "." 
 
     putStrLn $ "To encrypt messages, RSA needs two prime numbers to generate the private key. Which prime numbers would you like?"
     p <- getPrime 7170669219235139
     q <- getPrime 3557745895880441
     putStrLn $ "You have chosen primes " ++ show p ++ " and " ++ show q ++ "."
 
-    putStrLn $ "Lastly, choose a message."
+    putStrLn $ "Lastly, choose a private message."
+    m <- getMessage 4727576933
+    putStrLn $ "You have chosen private message " ++ show m ++ "." 
 
-    -- TODO: compute with user-defined primes
-    print $ decode keys (getPublicMessage keys 4727576933)
-        where keys = rsaReceiver exampleNumbers
+    -- Create the numbers and keys
+    let numbers = Numbers p q e
+    let keys = rsaReceiver numbers
+    
+    -- Show the result of encryption and decryption
+    let encrypted = getPublicMessage keys m
+    let decrypted = decode keys encrypted
+    
+    putStrLn $ "Encrypted message: " ++ show encrypted
+    putStrLn $ "Decrypted message: " ++ show decrypted
 
