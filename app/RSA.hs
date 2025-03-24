@@ -36,7 +36,7 @@ module RSA(
     -- determines whether the chosen public key is coprime to phi(pq)
     coprime :: Numbers -> Bool
     coprime (Numbers p q e) = gcdEuclid e phi == 1
-        where phi = (p - 1) * (p - 1)
+        where phi = (p - 1) * (q - 1)
 
     -- compute multiplicative inverse with respect to a given modulus
     inverse :: Integer -> Integer -> Integer

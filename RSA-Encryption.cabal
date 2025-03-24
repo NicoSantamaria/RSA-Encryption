@@ -9,25 +9,25 @@ build-type: Simple
 extra-doc-files: CHANGELOG.md
 
 common warnings
- ghc-options: -Wall
+    ghc-options: -Wall
 
 executable RSA-Encryption
- import: warnings
- main-is: Main.hs
- other-modules: 
-   Primes
-   RSA
- build-depends: base ^>=4.17.2.1
- hs-source-dirs: app
- default-language: Haskell2010
+    import: warnings
+    main-is: Main.hs
+    other-modules:
+        Primes
+        RSA
+    build-depends: base ^>=4.17.2.1
+    hs-source-dirs: app
+    default-language: Haskell2010
 
 test-suite prime-test
- import: warnings
- type: exitcode-stdio-1.0
- main-is: Spec.hs
- other-modules: Primes
- build-depends:
-   base ^>=4.17.2.1,
-   hspec >=2.0.0
- hs-source-dirs: test, app
- default-language: Haskell2010
+    import: warnings
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    other-modules: Primes
+    build-depends:
+        base ^>=4.17.2.1,
+        hspec >=2.0.0
+    hs-source-dirs: test, app
+    default-language: Haskell2010
