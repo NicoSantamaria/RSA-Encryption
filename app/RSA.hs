@@ -28,15 +28,15 @@ module RSA(
         | even y = mod (power b (div y 2) n ^ 2) n
         | odd  y = mod (power b (div (y-1) 2) n ^ 2 * b) n
 
-    -- find greatest common divisor of two integers using Euclids Division Algorithm
-    gcdEuclid :: Integral a => a -> a -> a
-    gcdEuclid a 0 = a
-    gcdEuclid a b = gcdEuclid b (mod a b)
 
     -- determines whether the chosen public key is coprime to phi(pq)
     coprime :: Numbers -> Bool
     coprime (Numbers p q e) = gcdEuclid e phi == 1
-        where phi = (p - 1) * (q - 1)
+        where 
+            phi = (p - 1) * (q - 1)
+            gcdEuclid :: Integral a => a -> a -> a
+            gcdEuclid a 0 = a
+            gcdEuclid a b = gcdEuclid b (mod a b)
 
     -- compute multiplicative inverse with respect to a given modulus
     inverse :: Integer -> Integer -> Integer

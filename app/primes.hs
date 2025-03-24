@@ -1,4 +1,4 @@
-module Primes (isPrime) where
+module Primes (isPrime, coprime) where
 
     -- checks if a given number is prime (naive approach)
     isPrime :: Integer -> Bool
@@ -12,3 +12,12 @@ module Primes (isPrime) where
                 divides i = mod n i == 0
                 integerSqrt :: Integer -> Integer
                 integerSqrt = floor . sqrt . fromIntegral
+
+    -- determines whether the chosen public key is coprime to phi(pq)
+    coprime :: Integer -> Integer -> Integer -> Bool
+    coprime p q e = gcdEuclid e phi == 1
+        where 
+            phi = (p - 1) * (q - 1)
+            gcdEuclid :: Integral a => a -> a -> a
+            gcdEuclid a 0 = a
+            gcdEuclid a b = gcdEuclid b (mod a b)
