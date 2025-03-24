@@ -14,7 +14,9 @@ common warnings
 executable RSA-Encryption
  import: warnings
  main-is: Main.hs
- other-modules: Primes
+ other-modules: 
+   Primes
+   RSA
  build-depends: base ^>=4.17.2.1
  hs-source-dirs: app
  default-language: Haskell2010
@@ -27,5 +29,5 @@ test-suite prime-test
  build-depends:
    base ^>=4.17.2.1,
    hspec >=2.0.0
- hs-source-dirs: app, test
+ hs-source-dirs: test, app
  default-language: Haskell2010
