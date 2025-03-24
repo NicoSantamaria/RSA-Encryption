@@ -1,4 +1,4 @@
-module Prime (is_prime) where
+module Primes (is_prime) where
 
     -- checks if a given number is prime (naive approach)
     is_prime :: Integer -> Bool
