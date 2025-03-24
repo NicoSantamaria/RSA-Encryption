@@ -17,20 +17,13 @@ rsaReceiver (Numbers p q e) = Keys (getPublicKey $ Numbers p q e) (getPrivateKey
 
 
 -- TODO: getPublicKey and getPrime are so similar... surely they can be abstracted
+-- e.g., start off with input <- getPrime defaultVal, then check if is of the form 2k + 1
 -- TODO: check that the input is of the form 2k + 1
 getUserPublicKey :: Integer -> IO Integer
 getUserPublicKey defaultVal = do
-    putStrLn $ "Please choose a public key. Type nothing to use the default value: " ++ show defaultVal
-    input <- getLine
-    if null input 
-        then return defaultVal
-        else do
-            let userNum = read input :: Integer
-            if isPrime userNum 
-                then return userNum
-                else do
-                    putStrLn $ input ++ " is not a prime."
-                    getUserPublicKey defaultVal
+    putStrLn $ "Please choose a prime public key."
+    input <- getPrime defaultVal
+    return input
 
 
 -- Function to get a prime number from the user with a default value
@@ -48,7 +41,7 @@ getPrime defaultVal = do
                     putStrLn $ input ++ " is not a prime."
                     getPrime defaultVal
 
-
+-- check for divide by zero errors: cant be congruent to the public key mod?
 getMessage :: Integer -> IO Integer
 getMessage defaultVal = do
     putStrLn $ "Please choose a message. Type nothing to use the default value: " ++ show defaultVal
