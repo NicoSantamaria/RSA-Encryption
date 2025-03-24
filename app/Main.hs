@@ -5,7 +5,6 @@ import Primes(isPrime, coprime)
 rsaReceiver :: Numbers -> Keys
 rsaReceiver (Numbers p q e) = Keys (getPublicKey $ Numbers p q e) (getPrivateKey $ Numbers p q e)
 
-
 -- Function to get a prime number from the user with a default value
 getPrime :: Integer -> IO Integer
 getPrime defaultVal = do
@@ -34,6 +33,7 @@ getUserFactor defaultVal = do
     input <- getPrime defaultVal
     return input
 
+-- prompt the user to generate two prime factors for the public key
 getUserPrimeFactors :: Integer -> Integer -> Integer -> IO Numbers
 getUserPrimeFactors firstDefaultPrime secondDefaultPrime e = do
     p <- getUserFactor firstDefaultPrime
@@ -54,20 +54,22 @@ getMessage defaultVal = do
         then return defaultVal
         else return (read input :: Integer)
 
-
 main :: IO()
 main = do
     putStrLn $ "Welcome to the RSA playground! Here, you can choose numbers..."
 
+    -- get e from the user
     putStrLn $ "First, choose a public key. Some strong public keys are Fermat primes, or primes of the form 2^k+1, such as 3, 5, 17, 257, and 65537."
     e <- getUserPublicKey 65537
     putStrLn $ "You have chosen public key " ++ show e ++ "." 
 
+    -- get p and q from the user
     putStrLn $ "To encrypt messages, RSA needs two prime numbers to generate the private key. Which prime numbers would you like?"
     numbersIO <- getUserPrimeFactors 7170669219235139 3557745895880441 e
     let (Numbers p q _) = numbersIO
     putStrLn $ "You have chosen primes " ++ show p ++ " and " ++ show q ++ "."
 
+    -- get m from the user
     putStrLn $ "Lastly, choose a private message."
     m <- getMessage 4727576933
     putStrLn $ "You have chosen private message " ++ show m ++ "." 
@@ -80,6 +82,7 @@ main = do
     let encrypted = getPublicMessage keys m
     let decrypted = decode keys encrypted
     
+    -- print results
     putStrLn $ "Encrypted message: " ++ show encrypted
     putStrLn $ "Decrypted message: " ++ show decrypted
 
