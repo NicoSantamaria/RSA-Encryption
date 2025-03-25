@@ -6,7 +6,8 @@ module RSA (
     getPublicMessage,
     power,
     decode,
-) where
+)
+where
 
 -- type for inputting pairs of primes with inverse
 data Numbers = Numbers
@@ -34,7 +35,7 @@ power b y n
 
 -- compute multiplicative inverse with respect to a given modulus
 inverse :: Integer -> Integer -> Integer
-inverse 1 b = 1
+inverse 1 _ = 1
 inverse a b = div (r * b + 1) a
   where
     r = a - inverse (mod b a) a
@@ -57,5 +58,4 @@ getPublicMessage (Keys (e, n) _) privMessage = power privMessage e n
 
 -- decode the public message to the private message with the public and private keys
 decode :: Keys -> Integer -> Integer
-decode (Keys _ (d, n)) pubMessage =
-    power pubMessage d n
+decode (Keys _ (d, n)) pubMessage = power pubMessage d n
