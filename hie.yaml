@@ -1,6 +1,0 @@
-cradle:
-  cabal:
-    - path: "./app"
-      component: "exe:RSA-Encryption"
-    - path: "./test"
-      component: "test:prime-test"
