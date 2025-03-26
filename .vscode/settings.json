@@ -1,5 +1,0 @@
-{
-    "haskell.serverExecutablePath": "haskell-language-server",
-    "haskell.formattingProvider": "ormolu",
-    "haskell.plugin.importLens.globalOn": true
-  }
